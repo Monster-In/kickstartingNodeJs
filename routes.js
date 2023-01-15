@@ -45,4 +45,5 @@ const server = http.createServer((req, res) => {
 
 server.listen(4000);
 
-module.exports = server;
+module.exports = {server};
+exports.server=server;
