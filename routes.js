@@ -1,6 +1,6 @@
 const http=require('http');
 const fs = require('fs');
-const server = http.createServer((req, res) => {
+const server = (req, res) => {
     const url = req.url;   
     if(url === "/")
     {      
@@ -41,9 +41,8 @@ const server = http.createServer((req, res) => {
     res.write('<body><h1>Hello from my Node.js Server! </h1></body>');
     res.write('</html>');
     res.end();
-});
+};
 
-server.listen(4000);
 
 module.exports = {server};
 exports.server=server;
