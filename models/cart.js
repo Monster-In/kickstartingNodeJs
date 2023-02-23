@@ -5,7 +5,7 @@ const p = path.join(path.dirname(require.main.filename),
 'data','cart.json');
 
 module.exports = class Cart{
-    static addProduct(id,producrPrice){
+    static addProduct(id,productPrice){
         //fetch the previous cart
         //analyse the cart =>find existing product
         //add new product/increase qnty
@@ -35,4 +35,22 @@ module.exports = class Cart{
             })
         })
     }
+
+
+    static deleteProduct(id, productPrice){
+        fs.readFile(p, (err, fileContent)=>{
+          if(err){
+            return;
+          }
+          const updatedCart = {...fileContent};
+          const product = updatedCart.products.findIndex(prod => prod.id === id);
+          const productQnty = product.qty;
+          updatedCart.products = updatedCart.products.filter(prod => prod.id !== id);
+    
+          updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQnty ;
+          fs.writeFile(p, JSON.stringify(updatedCart), err => {
+            console.log(err);
+          });
+        });
+      }
 }
