@@ -1,46 +1,29 @@
-const db = require('../util/database');
-const Cart = require('./cart');
+const Sequelize = require('sequelize'); //requiring the package
 
-const p =path.join(path.dirname(process.mainModule.filename) , "data", "products.json");
+const sequelize = require('../util/database'); //connection pool requireed thu sequalize
 
-const getProductsFromFile =(cb) => {
-  fs.readFile(p,(err, fileContent) => {
-    if(err) {
-      cb([]);
-    }
-    else{
-      cb(JSON.parse(fileContent));
-    }
-  });
-};
+//defining models that would be managed by sequelize
 
-module.exports = class Product {
-  constructor(id,title,imageUrl,description, price){
-    this.id=id
-    this.title=title;
-    this.imageUrl=imageUrl;
-    this.description=description;
-    this.price=price;
-  };
-
-
-  save(){
-   return db.execute('INSERT INTO products (title, price, description, imageUrl) VALUES (?, ?, ?, ?)', 
-    [this.title, this.price, this.description, this.imageUrl]);
-  };
-
-
-  static deleteById(id) {
-    return db.execute('DELETE FROM products WHERE products.id = ?', [id]);
+const Product = sequelize.define('product',{
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  title: Sequelize.STRING,
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
+});
 
-  static fetchAll() {
-    return db.execute('SELECT * FROM products');
-  }
-
-  static findById(id) {
-    return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
-
-  }
-
-};
+module.exports = Product;
