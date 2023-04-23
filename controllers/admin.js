@@ -19,7 +19,7 @@ exports.postAddProduct = (req, res, next) => {
     imageUrl: imageUrl,
     description: description
   }).then(result=>{
-    //console.log(result);
+    
     console.log('created product');
     res.redirect('/admin/products')
   }).catch(err=>{
@@ -27,15 +27,15 @@ exports.postAddProduct = (req, res, next) => {
   });
 };
 
-exports.getEditProduct = (req, res, next) => {
-  const editMode = req.query.edit;
-  if (!editMode) {
-    return res.redirect('/');
+exports.getEditProduct=(req,res,next)=>{
+  const editMode=req.query.edit;
+  if(!editMode){
+    return req.redirect("/")
   }
-  const prodId = req.params.productId;
+  const prodId=req.params.productId;
   Product.findByPk(prodId).then(product=>{
     if(!product){
-      return res.redirect('/');
+      return res.redirect("/");
     }
     res.render('admin/edit-product', {
       pageTitle: 'Edit Product',
@@ -43,10 +43,8 @@ exports.getEditProduct = (req, res, next) => {
       editing: editMode,
       product: product
     });
-  }).catch(err=>{
-    console.log(err);
-  });
-};
+  }).catch(err=>console.log(err));
+}
 
 exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
@@ -88,7 +86,7 @@ exports.getProducts = (req, res, next) => {
   
 };
 
-exports.deleteproductById = (req,res, next) =>{
+exports.deleteProductById = (req,res, next) =>{
   const prodId = req.body.productId;
   Product.findByPk(prodId).then(product=>{
     return product.destroy();
