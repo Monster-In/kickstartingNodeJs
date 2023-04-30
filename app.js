@@ -4,17 +4,16 @@ const bodyParser = require('body-parser');
 const errorController = require('./controllers/error');
 const sequelize = require('./util/database'); //pool that allows use to use connection to db
 const cors = require('cors');
-
 const app = express();  // using func of express to handling things for us or showing a way 
 
 app.use(cors());
-
 //app.set('view engine', 'ejs');
 //app.set('views','views');
 
 //const adminRoutes = require('./routes/admin');
 //const shopRoutes = require('./routes/shop');
 const userRoutes = require('./routes/users');
+const expenseRoutes = require('./routes/expense');
 
 
 //const contactusRoutes = require('./routes/contactus');
@@ -31,6 +30,8 @@ app.use(express.json())//instead of body parson json
 //app.use(shopRoutes);  //order matters
 
 app.use(userRoutes);
+
+app.use(expenseRoutes);
 
 //app.use(contactusRoutes);
 
